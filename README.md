@@ -1,7 +1,6 @@
-```markdown
 # Learn_DSI_API_DB
 
-Dette repository indeholder en lille API/DB-øvelse skrevet i TypeScript. README'en er opdateret med projektets dependencies og vigtige bemærkninger om Prisma-versioner.
+Dette repository indeholder en lille API/DB-øvelse skrevet i TypeScript. README'en er opdateret med projektets dependencies, vigtige bemærkninger om Prisma-versioner og instruktioner om hvad der er tilføjet til .gitignore (inkl. dansk oversættelse), så folk der fork'er eller kopierer projektet nemt kan tilføje de samme ignoreringsregler.
 
 Vigtige dependencies
 
@@ -33,7 +32,7 @@ datasource db {
 }
 ```
 
-- Hvis I opgraderer til Prisma v7 (fx "prisma": "7.x"), kræver ændringer i schema'en nogle gange, og i nogle setups kan I være nødt til at fjerne eller kommentere url-linjen i datasource-delen. Eksempel (kommenteret url):
+- Hvis I opgraderer til Prisma v7 (fx "prisma": "7.x"), kræver ændringer i schema'en nogle gange, og i nogle setups kan I være nødt til at fjerne eller kommentere url-linjen i datasource-delen
 
 ```prisma
 datasource db {
@@ -80,5 +79,53 @@ Sørg for at have en .env-fil med DATABASE_URL sat, fx:
 DATABASE_URL="mysql://user:password@localhost:3306/databasename"
 ```
 
-Hvis du bruger Prisma v7 og har kommenteret url-linjen i schema.prisma, skal du sikre dig, at din konfiguration stadig kan få forbindelse til databasen via den metode I vælger (fx via runtime-konfiguration eller miljøvariabler i din kode).
+Hvis du bruger Prisma v7 og har kommenteret url-linjen i schema.prisma, skal du sikre dig, at din konfiguration stadig kan få forbindelse til databasen via den metode I vælger (fx via runtime-konfiguration).
+
+Tilføjelser til .gitignore
+
+Følgende poster er blevet tilføjet til .gitignore for at holde repo'et rent og undgå at følsomme eller genererede filer kommer med i versionskontrol. Hvis du fork'er eller bruger projektet, kopier disse linjer ind i din egen .gitignore:
+
 ```
+node_modules
+# Keep environment variables out of version control
+.env
+
+/src/generated/prisma
+
+# Build output
+dist/
+build/
+out/
+
+# Local env files
+.env.local
+.env.test
+.env.production
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# OS and editor files
+.DS_Store
+.vscode/
+.idea/
+
+# Coverage
+coverage/
+```
+
+Hvad betyder disse linjer? (Dansk forklaring)
+
+- node_modules: Node.js-pakker installeret lokalt — skal ikke committes.
+- .env: Indeholder miljøvariabler (fx database-adgang) — holdes ude af version control.
+- /src/generated/prisma: Genereret Prisma-klient / artefakter — genereres lokalt, skal ikke versionstyres.
+- dist/, build/, out/: Byggeoutput fra kompilering/transpile — bør ikke være i git.
+- .env.local, .env.test, .env.production: Lokale eller miljøspecifikke .env-filer — må ikke deles i repo.
+- *.log, npm-debug.log*, yarn-debug.log*, yarn-error.log*: Logfiler fra kørsel/fejl — skal ignoreres.
+- .DS_Store, .vscode/, .idea/: OS- og editor-specifikke filer/mappper — irrelevante for projektkode.
+- coverage/: Test-coverage-rapporter — genereres lokalt og skal ikke være i repo.
+
+Kort sagt: kopier gerne ovenstående .gitignore-sektion ind i dit eget projekt når du fork'er eller tager koden i brug, så holder du følsomme oplysninger og genererede filer ude af versioneringshistorikken.
