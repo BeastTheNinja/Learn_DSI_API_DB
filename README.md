@@ -1,3 +1,4 @@
+```markdown
 # Learn_DSI_API_DB
 
 Dette repository indeholder en lille API/DB-øvelse skrevet i TypeScript. README'en er opdateret med projektets dependencies, vigtige bemærkninger om Prisma-versioner og instruktioner om hvad der er tilføjet til .gitignore (inkl. dansk oversættelse), så folk der fork'er eller kopierer projektet nemt kan tilføje de samme ignoreringsregler.
@@ -116,16 +117,3 @@ yarn-error.log*
 # Coverage
 coverage/
 ```
-
-Hvad betyder disse linjer? (Dansk forklaring)
-
-- node_modules: Node.js-pakker installeret lokalt — skal ikke committes.
-- .env: Indeholder miljøvariabler (fx database-adgang) — holdes ude af version control.
-- /src/generated/prisma: Genereret Prisma-klient / artefakter — genereres lokalt, skal ikke versionstyres.
-- dist/, build/, out/: Byggeoutput fra kompilering/transpile — bør ikke være i git.
-- .env.local, .env.test, .env.production: Lokale eller miljøspecifikke .env-filer — må ikke deles i repo.
-- *.log, npm-debug.log*, yarn-debug.log*, yarn-error.log*: Logfiler fra kørsel/fejl — skal ignoreres.
-- .DS_Store, .vscode/, .idea/: OS- og editor-specifikke filer/mappper — irrelevante for projektkode.
-- coverage/: Test-coverage-rapporter — genereres lokalt og skal ikke være i repo.
-
-Kort sagt: kopier gerne ovenstående .gitignore-sektion ind i dit eget projekt når du fork'er eller tager koden i brug, så holder du følsomme oplysninger og genererede filer ude af versioneringshistorikken.
