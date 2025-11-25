@@ -3,7 +3,15 @@ import { prisma } from '../prisma.js';
 
 export const getRecords = async (req: Request, res: Response) => {
   try {
-    const data = await prisma.categories.findMany();
+    const data = await prisma.categories.findMany({
+      select: {
+        id: true,
+        name: true,
+      },
+      orderBy: {
+        name: 'desc',
+      },
+    });
     console.log('categoryController:getRecords');
     res.json(data);
   } catch (error) {
@@ -36,24 +44,46 @@ export const createRecord = async (req: Request, res: Response) => {
 };
 
 export const updateRecord = async (req: Request, res: Response) => {
+  const id = Number(req.params.id);
+
+  if (!id || isNaN(id) || id <= 0) {
+    return res.status(400).json({ error: 'Id skal have en gyldig værdi' });
+  }
+
+  const { name } = req.body;
+
+  if (!name) {
+    return res.status(400).json({ error: 'Navn skal udfyldes' });
+  }
+
   try {
-    const id = Number(req.params.id);
-    const payload = req.body;
-    const data = await prisma.categories.update({ where: { id }, data: payload });
-    res.json(data);
+    const data = await prisma.categories.update({
+      where: { id },
+      data: { name },
+    });
+
+    return res.status(200).json(data);
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: 'Failed to update category' });
+    return res.status(500).json({ error: 'Failed to update category' });
   }
 };
 
 export const deleteRecord = async (req: Request, res: Response) => {
+  const id = Number(req.params.id);
+
+  if (!id || isNaN(id) || id <= 0) {
+    return res.status(400).json({ error: 'Id skal have en gyldig værdi' });
+  }
+
   try {
-    const id = Number(req.params.id);
+    const existing = await prisma.categories.findUnique({ where: { id } });
+    if (!existing) return res.status(404).json({ error: 'Category not found' });
+
     await prisma.categories.delete({ where: { id } });
-    res.status(204).send();
+    return res.status(200).json({ message: `Category ${id} deleted` });
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: 'Failed to delete category' });
+    return res.status(500).json({ error: 'Failed to delete category' });
   }
 };
