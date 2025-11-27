@@ -30,14 +30,18 @@ model cars {
  year Int 
 price Float
 fuelType String
+
+@@map("car")
 }
 
 model categories {
   id Int @id @default(autoincrement())
   name String
+  @@map("category")
 }
 model brands {
   id Int @id @default(autoincrement())
   name String
   logo String
+  @@map("brand")
 }
