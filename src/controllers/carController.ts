@@ -80,6 +80,11 @@ export const createRecord = async (req: Request, res: Response) => {
 
 
 export const updateRecord = async (req: Request, res: Response) => {
+  const id = Number(req.params.id);
+
+  if(!id) {
+    return  res.status(400).json({ error: 'Id is missing '})
+  }
 
   const { category, brand, model, year, price, fueltype } = req.body;
   
@@ -88,7 +93,8 @@ export const updateRecord = async (req: Request, res: Response) => {
   }
   
   try {
-    const data = await prisma.car.create({
+    const data = await prisma.car.update({
+      where: { id },
       data: {
         category,
         brand,
