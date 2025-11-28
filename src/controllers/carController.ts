@@ -110,3 +110,21 @@ export const updateRecord = async (req: Request, res: Response) => {
     return res.status(500).json({ error: 'Something went wrong' }) 
   }
 }
+
+export const deleteRecord = async (req: Request, res: Response) => {
+  const id = Number(req.params.id);
+
+  if(!id) {
+    return res.status(400).json({ error: 'Id is missing '})
+  }
+
+  try {
+    const data = await prisma.car.delete({
+      where: { id }
+    })
+    return res.status(200).json({ message: 'Car deleted successfully' });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ error: 'Failed to delete car' });
+  }
+}
