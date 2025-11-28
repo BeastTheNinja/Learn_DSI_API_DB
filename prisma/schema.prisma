@@ -22,26 +22,14 @@ model User {
   @@map("user")
 }
 
-model cars {
- id Int  @id @default(autoincrement())
- category String
- brand String
- model String
- year Int 
-price Float
-fuelType String
+model Car {
+  id       Int     @id @default(autoincrement())
+  category String
+  brand    String
+  model    String 
+  year     Int
+  price    Decimal @db.Decimal(10, 2)
+  fueltype String
 
-@@map("car")
-}
-
-model categories {
-  id Int @id @default(autoincrement())
-  name String
-  @@map("category")
-}
-model brands {
-  id Int @id @default(autoincrement())
-  name String
-  logo String
-  @@map("brand")
+  @@map("cars")
 }
