@@ -4,7 +4,7 @@ import { carRoutes } from './routes/carRoutes.js';
 import { brandRoutes } from './routes/brandRoutes.js';
 import { categoryRoutes } from './routes/categoryRoutes.js';
 import { userRoutes } from './routes/userRoutes.js';
-import { createRecord, getRecord, getRecords, updateRecord} from './controllers/carController.js';
+
 
 // Indlæs miljøvariabler fra .env (uden at vise logs)
 dotenv.config({ quiet: true });

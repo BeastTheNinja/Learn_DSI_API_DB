@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import { prisma } from '../prisma.js';
-import brypt from 'bcrypt';
+import bcrypt from 'bcrypt';
 import { Prisma } from '@prisma/client';
 
 export const getRecords = async (req: Request, res: Response) => {
@@ -47,7 +47,7 @@ export const createRecord = async (req: Request, res: Response) => {
   }
 
   try {
-    const hashed = await brypt.hash(password, 10);
+    const hashed = await bcrypt.hash(password, 10);
     const user = await prisma.user.create({
       data: {
         firstname,
@@ -80,7 +80,7 @@ export const updateRecord = async (req: Request, res: Response) => {
   if (email) data.email = email;
   if (role) data.role = role;
   if (isActive !== undefined) data.isActive = Boolean(isActive);
-  if (password) data.password = await brypt.hash(password, 10);
+  if (password) data.password = await bcrypt.hash(password, 10);
 
   try {
     const updated = await prisma.user.update({
