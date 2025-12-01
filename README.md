@@ -11,17 +11,19 @@ Projektet er lavet med TypeScript og bruger Prisma. Sørg for at bruge følgende
 ```
 json
 "dependencies": {
-  "@prisma/client": "6.19",
-  "dotenv": "^17.2.3",
-  "express": "^5.1.0"
-},
-"devDependencies": {
-  "@types/express": "^5.0.5",
-  "@types/node": "^24.10.1",
-  "prisma": "6.19",
-  "tsx": "^4.20.6",
-  "typescript": "^5.9.3"
-}
+    "@prisma/client": "6.19",
+    "bcrypt": "^6.0.0",
+    "dotenv": "^17.2.3",
+    "express": "^5.1.0"
+  },
+  "devDependencies": {
+    "@types/bcrypt": "^6.0.0",
+    "@types/express": "^5.0.5",
+    "@types/node": "^24.10.1",
+    "prisma": "6.19",
+    "tsx": "^4.20.6",
+    "typescript": "^5.9.3"
+  }
 ```
 ```
 Bemærk om Prisma 6.x vs 7.x
