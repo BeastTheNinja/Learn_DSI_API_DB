@@ -24,14 +24,16 @@ model User {
 
 model Car {
   id       Int     @id @default(autoincrement())
-  category String
-  brandID  Int
-  model    String 
-  year     Int
-  price    Decimal @db.Decimal(10, 2)
-  fueltype String
 
-  brand   Brand   @relation(fields: [brandID], references: [id])
+  categoryId Int
+  brandId    Int
+  model      String
+  year       Int
+  price      Float
+  fuelType   String
+
+  brand    Brand    @relation(fields: [brandId], references: [id])
+  category Category @relation(fields: [categoryId], references: [id])
 
   @@map("cars")
 }
@@ -39,7 +41,7 @@ model Car {
 model Brand {
   id    Int    @id @default(autoincrement())
   name  String @unique
-  logoURL String
+  logo  String
   @@map("brands")
 
   cars  Car[]
@@ -48,6 +50,7 @@ model Brand {
 model Category {
   id   Int    @id @default(autoincrement())
   name String @unique
-
   @@map("categories")
+
+  cars Car[]
 }

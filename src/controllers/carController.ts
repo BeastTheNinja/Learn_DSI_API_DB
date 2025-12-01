@@ -1,24 +1,17 @@
 import { Request, Response } from 'express';
 import { prisma } from '../prisma.js';
 
-/**
- * Method Get Records
- * @param req 
- * @param res 
- * @returns Array
- */
 export const getRecords = async (req: Request, res: Response) => {
   try {
     const data = await prisma.car.findMany({
-       select: {
-      model: true,
-      brand: {
-        select: {
-          name: true,
-          logoUrl: true
-        }
-      }
-    }
+      select: {
+        id: true,
+        model: true,
+        price: true,
+        brand: { select: { id: true, name: true, logo: true } },
+        category: { select: { id: true, name: true } },
+      },
+      orderBy: { price: 'desc' },
     });
     return res.status(200).json(data);
   } catch (error) {
@@ -27,114 +20,112 @@ export const getRecords = async (req: Request, res: Response) => {
   }
 };
 
-/**
- * Method Get Record
- * @param req 
- * @param res 
- * @returns Object
- */
 export const getRecord = async (req: Request, res: Response) => {
   const id = Number(req.params.id);
 
-  if(!id) {
-    return res.status(400).json({ error: 'Id is missing '})
+  if (!id || isNaN(id) || id <= 0) {
+    return res.status(400).json({ error: 'Id is missing or invalid' });
   }
 
   try {
     const data = await prisma.car.findUnique({
       where: { id },
-      select: {
-        id: true,
-        model: true,
-        brand: true
-      }
-    })
-    return res.status(200).json(data)
+      include: { brand: true, category: true },
+    });
+    if (!data) return res.status(404).json({ error: 'Car not found' });
+    return res.status(200).json(data);
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: 'Failed to fetch car' });
   }
-}
+};
 
-/**
- * Method Create Record
- * @param req 
- * @param res 
- * @returns Object
- */
 export const createRecord = async (req: Request, res: Response) => {
+  const { categoryId, brandId, model, year, price, fuelType } = req.body;
 
-  const { category, brandId, model, year, price, fueltype } = req.body;
-  
-  if(!category || !brandId|| !model || !year || !price || !fueltype) {
-    return res.status(400).json({ error: 'All data is required' })
+  if (
+    !categoryId ||
+    !brandId ||
+    !model ||
+    year === undefined ||
+    price === undefined ||
+    !fuelType
+  ) {
+    return res.status(400).json({ error: 'All data is required' });
   }
-  
+
   try {
     const data = await prisma.car.create({
       data: {
-        category,
+        categoryId: Number(categoryId),
         brandId: Number(brandId),
         model,
         year: Number(year),
-        price,
-        fueltype
-      }
-    })
-    return res.status(201).json(data)
+        price: Number(price),
+        fuelType,
+      },
+    });
+    return res.status(201).json(data);
   } catch (error) {
     console.error(error);
-    return res.status(500).json({ error: 'Something went wrong' }) 
+    return res.status(500).json({ error: 'Something went wrong' });
   }
-}
-
+};
 
 export const updateRecord = async (req: Request, res: Response) => {
   const id = Number(req.params.id);
 
-  if(!id) {
-    return  res.status(400).json({ error: 'Id is missing '})
+  if (!id || isNaN(id) || id <= 0) {
+    return res.status(400).json({ error: 'Id is missing or invalid' });
   }
 
-  const { category, brand, model, year, price, fueltype } = req.body;
-  
-  if(!category || !brand || !model || !year || !price || !fueltype) {
-    return res.status(400).json({ error: 'All data is required' })
+  const { categoryId, brandId, model, year, price, fuelType } = req.body;
+
+  if (
+    !categoryId ||
+    !brandId ||
+    !model ||
+    year === undefined ||
+    price === undefined ||
+    !fuelType
+  ) {
+    return res.status(400).json({ error: 'All data is required' });
   }
-  
+
   try {
     const data = await prisma.car.update({
       where: { id },
       data: {
-        category,
-        brand,
+        categoryId: Number(categoryId),
+        brandId: Number(brandId),
         model,
         year: Number(year),
-        price,
-        fueltype
-      }
-    })
-    return res.status(201).json(data)
+        price: Number(price),
+        fuelType,
+      },
+    });
+    return res.status(200).json(data);
   } catch (error) {
     console.error(error);
-    return res.status(500).json({ error: 'Something went wrong' }) 
+    return res.status(500).json({ error: 'Something went wrong' });
   }
-}
+};
 
 export const deleteRecord = async (req: Request, res: Response) => {
   const id = Number(req.params.id);
 
-  if(!id) {
-    return res.status(400).json({ error: 'Id is missing '})
+  if (!id || isNaN(id) || id <= 0) {
+    return res.status(400).json({ error: 'Id is missing or invalid' });
   }
 
   try {
-    const data = await prisma.car.delete({
-      where: { id }
-    })
+    const existing = await prisma.car.findUnique({ where: { id } });
+    if (!existing) return res.status(404).json({ error: 'Car not found' });
+
+    await prisma.car.delete({ where: { id } });
     return res.status(200).json({ message: 'Car deleted successfully' });
   } catch (error) {
     console.error(error);
     return res.status(500).json({ error: 'Failed to delete car' });
   }
-}
+};

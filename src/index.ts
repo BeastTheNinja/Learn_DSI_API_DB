@@ -1,6 +1,8 @@
 import express from 'express';
 import dotenv from 'dotenv';
 import { carRoutes } from './routes/carRoutes.js';
+import { brandRoutes } from './routes/brandRoutes.js';
+import { categoryRoutes } from './routes/categoryRoutes.js';
 import { createRecord, getRecord, getRecords, updateRecord} from './controllers/carController.js';
 
 // Indlæs miljøvariabler fra .env (uden at vise logs)
@@ -20,6 +22,8 @@ app.use(express.urlencoded({ extended: true }));
 
 // Anvend routes
 app.use('/api/cars', carRoutes);
+app.use('/api/brands', brandRoutes);
+app.use('/api/categories', categoryRoutes);
 
 
 
