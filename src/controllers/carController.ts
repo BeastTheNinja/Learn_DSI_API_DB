@@ -42,13 +42,13 @@ export const getRecord = async (req: Request, res: Response) => {
 
 export const createRecord = async (req: Request, res: Response) => {
   const { categoryId, brandId, model, year, price, fuelType } = req.body;
-
+  console.log(req.body);
   if (
     !categoryId ||
     !brandId ||
     !model ||
-    year === undefined ||
-    price === undefined ||
+    !year ||
+    !price ||
     !fuelType
   ) {
     return res.status(400).json({ error: 'All data is required' });

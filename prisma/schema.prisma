@@ -29,7 +29,7 @@ model Car {
   brandId    Int
   model      String
   year       Int
-  price      Float
+  price      Decimal @db.Decimal(10, 2)
   fuelType   String
 
   brand    Brand    @relation(fields: [brandId], references: [id])
