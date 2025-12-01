@@ -1,14 +1,16 @@
-```markdown
+
 # Learn_DSI_API_DB
 
 Dette repository indeholder en lille API/DB-øvelse skrevet i TypeScript.
 
-Vigtige dependencies
+
 
 Projektet er lavet med TypeScript og bruger Prisma. Sørg for at bruge følgende versioner (ellers kommenter beskrivelsen om datasource i schema.prisma som vist nedenfor):
 
-```
-```
+
+
+```markdown
+Vigtige dependencies
 json
 "dependencies": {
     "@prisma/client": "6.19",
