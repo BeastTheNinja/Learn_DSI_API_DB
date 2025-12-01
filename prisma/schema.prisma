@@ -25,11 +25,29 @@ model User {
 model Car {
   id       Int     @id @default(autoincrement())
   category String
-  brand    String
+  brandID  Int
   model    String 
   year     Int
   price    Decimal @db.Decimal(10, 2)
   fueltype String
 
+  brand   Brand   @relation(fields: [brandID], references: [id])
+
   @@map("cars")
+}
+
+model Brand {
+  id    Int    @id @default(autoincrement())
+  name  String @unique
+  logoURL String
+  @@map("brands")
+
+  cars  Car[]
+}
+
+model Category {
+  id   Int    @id @default(autoincrement())
+  name String @unique
+
+  @@map("categories")
 }
