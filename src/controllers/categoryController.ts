@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import { prisma } from '../prisma.js';
+import { Prisma } from '@prisma/client';
 
 export const getRecords = async (req: Request, res: Response) => {
   try {
@@ -37,6 +38,13 @@ export const createRecord = async (req: Request, res: Response) => {
     return res.status(201).json(data);
   } catch (error) {
     console.error(error);
+    // Handle unique constraint violation (duplicate name)
+    if (
+      error instanceof Prisma.PrismaClientKnownRequestError &&
+      error.code === 'P2002'
+    ) {
+      return res.status(409).json({ error: 'Category already exists' });
+    }
     return res.status(500).json({ error: 'Failed to create category' });
   }
 };
