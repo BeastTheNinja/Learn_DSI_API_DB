@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import { prisma } from '../prisma.js';
-import { brypt } from 'bcryptjs';
+import brypt from 'bcrypt';
 import { Prisma } from '@prisma/client';
 
 export const getRecords = async (req: Request, res: Response) => {
