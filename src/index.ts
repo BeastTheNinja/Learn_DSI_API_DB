@@ -4,6 +4,7 @@ import { carRoutes } from './routes/carRoutes.js';
 import { brandRoutes } from './routes/brandRoutes.js';
 import { categoryRoutes } from './routes/categoryRoutes.js';
 import { userRoutes } from './routes/userRoutes.js';
+import { loginRoutes } from './routes/loginRoutes.js';
 
 
 // Indlæs miljøvariabler fra .env (uden at vise logs)
@@ -26,7 +27,7 @@ app.use('/api/cars', carRoutes);
 app.use('/api/brands', brandRoutes);
 app.use('/api/categories', categoryRoutes);
 app.use('/api/users', userRoutes);
-
+app.use('/login', loginRoutes);
 
 
 // 404 route
