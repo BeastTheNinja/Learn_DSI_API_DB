@@ -2,7 +2,7 @@
 
 This repository contains a simple API project using TypeScript, Express and Prisma. Below you'll find the dependencies used, installation and setup instructions, and a quick example to get you started.
 
-## Dependencies (copy into your package.json)
+## Dependencies (install required)
 
 ```json
 "dependencies": {
