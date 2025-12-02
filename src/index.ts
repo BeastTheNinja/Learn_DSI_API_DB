@@ -27,7 +27,7 @@ app.use('/api/cars', carRoutes);
 app.use('/api/brands', brandRoutes);
 app.use('/api/categories', categoryRoutes);
 app.use('/api/users', userRoutes);
-app.use('/login', loginRoutes);
+app.use('/api/login', loginRoutes);
 
 
 // 404 route
