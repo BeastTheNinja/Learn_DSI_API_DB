@@ -23,13 +23,19 @@ app.use(express.json());
 // Gør det muligt at modtage form-data (fx fra formularer)
 app.use(express.urlencoded({ extended: true }));
 
+// Simple request logger to help debug Postman vs console differences
+app.use((req, res, next) => {
+  console.log(new Date().toISOString(), req.method, req.originalUrl, 'body=', req.body);
+  next();
+});
+
 // Anvend routes
 app.use('/api/cars', carRoutes);
 app.use('/api/brands', brandRoutes);
 app.use('/api/categories', categoryRoutes);
 app.use('/api/users', userRoutes);
-// Public route for token validation (use Bearer token in Authorization header)
-app.use('/api/authenticate', authRoutes);
+// Mount auth routes under /api so router's internal '/authenticate' => '/api/authenticate'
+app.use('/api', authRoutes);
 app.use('/api/login', loginRoutes);
 
 // 404 route
