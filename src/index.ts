@@ -4,6 +4,7 @@ import { carRoutes } from './routes/carRoutes.js';
 import { brandRoutes } from './routes/brandRoutes.js';
 import { categoryRoutes } from './routes/categoryRoutes.js';
 import { userRoutes } from './routes/userRoutes.js';
+import { authRoutes } from './routes/authRoutes.js';
 import { loginRoutes } from './routes/loginRoutes.js';
 
 
@@ -27,8 +28,9 @@ app.use('/api/cars', carRoutes);
 app.use('/api/brands', brandRoutes);
 app.use('/api/categories', categoryRoutes);
 app.use('/api/users', userRoutes);
+// Public route for token validation (use Bearer token in Authorization header)
+app.use('/api/authenticate', authRoutes);
 app.use('/api/login', loginRoutes);
-
 
 // 404 route
 app.use((req, res) => {
