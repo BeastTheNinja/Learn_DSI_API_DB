@@ -65,8 +65,8 @@ model Category {
 
 model fuelType {
   id   Int    @id @default(autoincrement())
-  name String 
-  @@map("fuel_types")
+  type String 
+  @@map("fueltypes")
 
   cars Car[]
 }

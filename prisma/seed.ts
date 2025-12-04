@@ -1,5 +1,6 @@
 import bcrypt from 'bcrypt';
 import { prisma } from '../src/prisma';
+import { randomPrice, randomYear } from '../src/utils/seedHelpers';
 
 // Asynkron main-funktion som kører vores seed-data
 const main = async () => {
@@ -37,11 +38,11 @@ const main = async () => {
   // Opret drivmidler (fuel types) - Prisma modellen hedder `fuelType` og feltet er `type`
   await prisma.fuelType.createMany({
     data: [
-      { name: 'Benzin' },
-      { name: 'Diesel' },
-      { name: 'El' },
-      { name: 'Hybrid' },
-      { name: 'Andre' }
+      { type: 'Benzin' },
+      { type: 'Diesel' },
+      { type: 'El' },
+      { type: 'Hybrid' },
+      { type: 'Andre' }
     ],
     skipDuplicates: true
   });
@@ -79,34 +80,37 @@ const main = async () => {
   // Helper to find id by name/type
   const findCategoryId = (name: string) => categories.find((c) => c.name === name)?.id as number;
   const findBrandId = (name: string) => brands.find((b) => b.name === name)?.id as number;
-  const findFuelId = (name: string) => fueltypes.find((f) => f.name === name)?.id as number;
+  const findFuelId = (type: string) => fueltypes.find((f) => f.type === type)?.id as number;
 
-  // Opret mindst 10 biler med varierede relationer
+  // Opret mindst 10 biler med varierede relationer (år og pris genereres tilfældigt)
   const carData = [
-    { model: 'Corolla', year: 2019, price: '15999.00', brand: 'Toyota', category: 'Personbil', fuel: 'Benzin' },
-    { model: 'Rav4', year: 2021, price: '24999.00', brand: 'Toyota', category: 'Personbil', fuel: 'Hybrid' },
-    { model: 'Model 3', year: 2022, price: '37999.00', brand: 'Tesla', category: 'Personbil', fuel: 'El' },
-    { model: 'F-150', year: 2018, price: '29999.00', brand: 'Ford', category: 'Varevogn', fuel: 'Diesel' },
-    { model: 'i3', year: 2017, price: '10999.00', brand: 'BMW', category: 'Personbil', fuel: 'El' },
-    { model: 'Transporter', year: 2020, price: '21999.00', brand: 'Volkswagen', category: 'Varevogn', fuel: 'Diesel' },
-    { model: 'Camper X', year: 2015, price: '34999.00', brand: 'Volkswagen', category: 'Autocamper', fuel: 'Diesel' },
-    { model: 'Series 5', year: 2016, price: '17999.00', brand: 'BMW', category: 'Personbil', fuel: 'Benzin' },
-    { model: 'Van Pro', year: 2014, price: '8999.00', brand: 'Ford', category: 'Lastbil', fuel: 'Diesel' },
-    { model: 'Econo', year: 2013, price: '4999.00', brand: 'Toyota', category: 'Andre', fuel: 'Benzin' }
+    { model: 'Corolla', brand: 'Toyota', category: 'Personbil', fuel: 'Benzin' },
+    { model: 'Rav4', brand: 'Toyota', category: 'Personbil', fuel: 'Hybrid' },
+    { model: 'Model 3', brand: 'Tesla', category: 'Personbil', fuel: 'El' },
+    { model: 'F-150', brand: 'Ford', category: 'Varevogn', fuel: 'Diesel' },
+    { model: 'i3', brand: 'BMW', category: 'Personbil', fuel: 'El' },
+    { model: 'Transporter', brand: 'Volkswagen', category: 'Varevogn', fuel: 'Diesel' },
+    { model: 'Camper X', brand: 'Volkswagen', category: 'Autocamper', fuel: 'Diesel' },
+    { model: 'Series 5', brand: 'BMW', category: 'Personbil', fuel: 'Benzin' },
+    { model: 'Van Pro', brand: 'Ford', category: 'Lastbil', fuel: 'Diesel' },
+    { model: 'Econo', brand: 'Toyota', category: 'Andre', fuel: 'Benzin' }
   ];
 
   for (const c of carData) {
+    const year = randomYear(2008, 2024);
+    const price = randomPrice(3000, 45000);
+
     const created = await prisma.car.create({
       data: {
         model: c.model,
-        year: c.year,
-        price: c.price,
+        year,
+        price,
         brandId: findBrandId(c.brand),
         categoryId: findCategoryId(c.category),
         fuelTypeId: findFuelId(c.fuel)
       }
     });
-    console.log('Created car:', created.model, 'id', created.id);
+    console.log('Created car:', created.model, 'id', created.id, 'year', year, 'price', price);
   }
 
   console.log('Seeding complete.');
