@@ -37,10 +37,11 @@ model Car {
   model      String
   year       Int
   price      Decimal @db.Decimal(10, 2)
-  fuelType   String
+  fuelTypeId Int
 
   brand    Brand    @relation(fields: [brandId], references: [id])
   category Category @relation(fields: [categoryId], references: [id])
+  fuelType fuelType @relation(fields: [fuelTypeId], references: [id])
 
   @@map("cars")
 }
@@ -58,6 +59,14 @@ model Category {
   id   Int    @id @default(autoincrement())
   name String 
   @@map("categories")
+
+  cars Car[]
+}
+
+model fuelType {
+  id   Int    @id @default(autoincrement())
+  name String 
+  @@map("fuel_types")
 
   cars Car[]
 }

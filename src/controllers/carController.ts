@@ -62,7 +62,7 @@ export const createRecord = async (req: Request, res: Response) => {
         model,
         year: Number(year),
         price: Number(price),
-        fuelType,
+        fuelTypeId: Number(fuelType),
       },
     });
     return res.status(201).json(data);
